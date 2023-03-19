@@ -1,0 +1,216 @@
+<!-- index.ejs -->
+
+<html>
+  <head>
+    <title>AMF Form Crteator</title>
+    <link rel="stylesheet" href="/views/public/css/styles.css" />
+  </head>
+  <body>
+    
+    <div class="form-container">
+      
+      <form method="post" action="/submit">
+        <h1>AMF Form Creator</h1>
+        <label for="dropdown">Select an item:</label>
+        <select id="dropdown" name="item">
+          <option value="please-select "></option>
+          <option value="close-account">To Close Account</option>
+          <option value="change-pricing">Add Pricing/Change Pricing</option>
+          <option value="settlement-account">Settlement Account</option>
+          <option value="customer-email">Customer Email address</option>
+          <option value="customer-address">Customer Address</option>
+          <option value="change-settlement">
+            Change Settlement From Gross to Nett
+          </option>
+          <option value="change-settlement-period">
+            Change settlement Period to immediate
+          </option>
+        </select>
+        <div id="input-options"></div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+
+    <script>
+      const dropdown = document.querySelector("#dropdown");
+      const inputOptions = document.querySelector("#input-options");
+
+      dropdown.addEventListener("change", (event) => {
+        const selectedItem = event.target.value;
+
+        // display input options based on the selected item
+        switch (selectedItem) {
+          case "close-account":
+            inputOptions.innerHTML = `
+              <label for="reasonforamf">Reason for AMF:</label>
+              <input type="text" id="reasonforamf" name="reasonforamf" value="To Make Inactive">
+
+              <label for="agency-type">Agency Type:</label>
+              <input type="text" id="agency-type" name="agency-type" value="MS Merchant Services">
+
+              <label for="mid">Merchant ID:</label>
+              <input type="text" id="mid" name="mid">
+
+              <label for="merchant-name">Merchant Name:</label>
+              <input type="text" id="merchant-name" name="merchant-name">
+
+              <label for="agency-number">Agency Number:</label>
+              <input type="text" id="agency-number" name="agency-number">
+
+              <label for="end-date">End Date:</label>
+              <input type="text" id="end-date" name="end-date">
+            `;
+            break;
+
+          case "change-pricing":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Price Variation">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS Merchant Services">
+
+            <label for="agency-customer-no">Agency Customer No:</label>
+            <input type="text" id="agency-customer-no" name="agency-customer-no">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number">
+
+            <label for="start-date">Start Date:</label>
+            <input type="text" id="start-date" name="start-date">
+            
+            <label for="end-date">End Date:</label>
+            <input type="text" id="end-date" name="end-date">
+            `;
+            break;
+
+          case "settlement-account":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS Merchant Services">
+
+            <label for="agency-principle-name">Agency Principle Name:</label>
+            <input type="text" id="agency-principle-name" name="agency-principle-name">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number">
+
+            <label for="bank-name">Bank & Branch Name:</label>
+            <input type="text" id="bank-name" name="bank-name">
+            
+            <label for="bsb">BSB:</label>
+            <input type="text" id="bsb" name="bsb">
+
+            <label for="account-number">Account Number:</label>
+            <input type="text" id="account-number" name="account-number">
+
+            <label for="Vendor">Vendor Number:</label>
+            <input type="text" id="Vendor" name="Vendor">
+            `;
+            break;
+
+          case "customer-email":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS Merchant Services">
+
+            <label for="agency-principle-name">Agency Principle Name:</label>
+            <input type="text" id="agency-principle-name" name="agency-principle-name">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number">
+
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email">
+                        
+            <label for="Vendor">Vendor Number:</label>
+            <input type="text" id="Vendor" name="Vendor">
+            `;
+            break;
+
+          case "customer-address":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS Merchant Services">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number">
+
+            <label for="agency-customer-number">Agency Customer No:</label>
+            <input type="text" id="agency-customer-number" name="agency-customer-number">
+
+            <label for="Address1">Address Line 1:</label>
+            <input type="text" id="Address1" name="Address1">
+
+            <label for="Address1">Address Line 1:</label>
+            <input type="text" id="Address1" name="Address1">
+                        
+            <label for="Suburb">Suburb:</label>
+            <input type="text" id="Suburb" name="Suburb">
+
+            <label for="State">State:</label>
+            <input type="text" id="State" name="State">
+
+            <label for="Postcode">State:</label>
+            <input type="text" id="State" name="State">
+            `;
+            break;
+
+          case "change-settlement":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS Merchant Services">
+
+            <label for="negative-adjustments">Negative Adjustments & Dishonours:</label>
+            <input type="text" id="negative-adjustments" name="negative-adjustments" value="Nett">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number">
+
+            <label for="agency-customer-number">Agency Customer No:</label>
+            <input type="text" id="agency-customer-number" name="agency-customer-number">
+
+            <label for="start-date">Contract Start Date:</label>
+            <input type="text" id="start-date" name="start-date">
+            `;
+            break;
+
+          case "change-settlement-period":
+            inputOptions.innerHTML = `
+              <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS Merchant Services">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number">
+
+            <label for="agency-customer-number">Agency Customer No:</label>
+            <input type="text" id="agency-customer-number" name="agency-customer-number">
+
+            <label for="negative-adjustments">Negative Adjustments & Dishonours:</label>
+            <input type="text" id="negative-adjustments" name="negative-adjustments" value="Nett"
+              `;
+            break;
+
+          default:
+            inputOptions.innerHTML = "";
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>

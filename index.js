@@ -1,45 +1,115 @@
-const { PDFDocument } = require('pdf-lib');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const { PDFDocument, StandardFonts } = require('pdf-lib');
 const fs = require('fs');
 
-// load the existing PDF document
-const pdfBytes = fs.readFileSync('existing_document.pdf');
+app.use(express.static('public', {
+  setHeaders: (res, path, stat) => {
+    res.set('Content-Type', 'text/css');
+  }
+}));
 
-// parse the PDF document using pdf-lib
-const pdfDoc = await PDFDocument.load(pdfBytes);
+const port = 3000;
 
-// get the form fields in the PDF document
-const form = pdfDoc.getForm();
-const reasonForAmfField = form.getTextField('reason_for_amf');
-const agencyTypeField = form.getTextField('agency_type');
-const agencyNumberField = form.getTextField('agency_number');
-const midField = form.getTextField('mid');
-const merchantNameField = form.getTextField('merchant_name');
-const startDateField = form.getTextField('start_date');
-const endDateField = form.getTextField('end_date');
-const agencyCustomerNoField = form.getTextField('agency_customer_no');
-const agencyPrincipleNameField = form.getTextField('agency_principle_name');
-const accountField = form.getTextField('account');
-const emailField = form.getTextField('email');
-const addressField = form.getTextField('address');
-const settlementTypeField = form.getTextField('settlement_type');
-const periodField = form.getTextField('period');
+// use EJS as the view engine
+app.set('view engine', 'ejs');
+app.use(express.static("./"));
 
-// update the field values with the data from your form
-reasonForAmfField.setText(req.body.reasonForAmf);
-agencyTypeField.setText(req.body.agencyType);
-agencyNumberField.setText(req.body.agencyNumber);
-midField.setText(req.body.mid);
-merchantNameField.setText(req.body.merchantName);
-startDateField.setText(req.body.startDate);
-endDateField.setText(req.body.endDate);
-agencyCustomerNoField.setText(req.body.agencyCustomerNo);
-agencyPrincipleNameField.setText(req.body.agencyPrincipleName);
-accountField.setText(req.body.account);
-emailField.setText(req.body.email);
-addressField.setText(req.body.address);
-settlementTypeField.setText(req.body.settlementType);
-periodField.setText(req.body.period);
+// parse request bodies as JSON
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// save the updated PDF document
-const updatedPdfBytes = await pdfDoc.save();
-fs.writeFileSync('updated_document.pdf', updatedPdfBytes);
+// handle requests to the home page
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+// handle POST requests to the form submission
+app.post('/submit', async (req, res) => {
+  const selectedItem = req.body.item;
+  const reasonForAmf = req.body['reasonforamf'];
+  const agencyType = req.body['agency-type'];
+  const agencyNumber = req.body['agency-number'];
+  const mid = req.body['mid'];
+  const merchantName = req.body['merchant-name']
+  const startDate = req.body['start-date'];
+  const endDate = req.body['end-date'];
+  const agencyCustomerNo = req.body['agency-customer-no'];
+  const agencyPrincipleName = req.body['agency-principle-name'];
+  const account = req.body.account;
+  const email = req.body.email;
+  const address = req.body.address;
+  const settlementType = req.body['settlement-type'];
+  const period = req.body.period;
+
+  console.log ('Reason for AMF=', reasonForAmf)
+  console.log ('Agency Number=', agencyNumber)
+  console.log ('MID=', mid)
+  console.log ('Merchant Name=', merchantName)
+  console.log ('Start Date', startDate)
+
+  // Load the existing PDF file
+  const pdfBytes = fs.readFileSync('template.pdf');
+
+  // Create a new PDF document based on the existing one
+  const pdfDoc = await PDFDocument.load(pdfBytes);
+
+  // Get the first page
+  const pages = pdfDoc.getPages();
+  const page = pages[0];
+
+  // Embed a font
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+  // Set the font size and write the user input to the page
+  const fontSize = 12;
+  const headingfontsize = 40;
+  const lineHeight = fontSize * 1.5;
+  const margin = 50;
+  let y = page.getHeight() - margin;
+  page.drawText(`Agency Management Form – Post Billpay and IDV`, {
+    x: margin,
+    y,
+    size: headingfontsize,
+    font,
+  });
+  y -= lineHeight;
+  page.drawText(`Reason for AMF: ${reasonForAmf}`, {
+    x: margin,
+    y,
+    size: fontSize,
+    font,
+  });
+  y -= lineHeight;
+  page.drawText(`Agency Type: ${agencyType}`, {
+    x: margin,
+    y,
+    size: fontSize,
+    font,
+  });
+  y -= lineHeight;
+  page.drawText(`Agency Number: ${agencyNumber}`, {
+    x: margin,
+    y,
+    size: fontSize,
+    font,
+  });
+
+  // save the filled PDF as a file and send it as a response
+//  const pdfBytes = await pdfDoc.save();
+  fs.writeFile(mid + '.pdf', pdfBytes, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Failed to generate PDF');
+    } else {
+      console.log('PDF generated successfully');
+      res.download(mid + '.pdf');
+    }
+  });
+});
+
+// start the server
+app.listen(port, () => {
+  console.log(`App listening on http://localhost:${port}`);
+});
