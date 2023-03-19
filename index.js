@@ -42,7 +42,7 @@ app.post('/submit', async (req, res) => {
   const address = req.body.address;
   const settlementType = req.body['settlement-type'];
   const period = req.body.period;
-
+  
   console.log ('Reason for AMF=', reasonForAmf)
   console.log ('Agency Number=', agencyNumber)
   console.log ('MID=', mid)
