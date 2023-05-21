@@ -1,0 +1,98 @@
+AMF Form Field Names
+
+Section 1 – Account / Agency / Billing Information
+
+Reason_for_AMF
+Agency_Type
+Account_Manager
+Agency_Principle_Name
+Agency_Principle_Number
+Distribution_Channel
+ABN
+ZA_Agency_CoOrdinator
+Managing_State
+ZB_Agency_Contact
+Agency_Customer_Number_1
+Agency_Customer_Number_2
+Agency_Customer_Number_3
+Agency_Customer_Number_4
+Transaction_Code_1
+Transaction_Code_2
+Transaction_Code_3
+Transaction_Code_4
+
+Section 2 – Contract Terms
+
+Contract_Start_Date
+Contract_End_Date
+Commission_Billing_Method
+Negative_Adjustments_Dishonours
+CPI_Applicable
+First_CPI_Review_Date
+CPI_Indexation_Frequency
+CPI_Rate_Applicable
+CPI_Quarter
+CPI_Pro_Rata_Amount
+Target_Revenue
+GST_Applicable
+Covered_by_Umbrella
+Umbrella_Code
+Umbrella_Description
+Missing_Cheque_Reversal_allowed
+
+Section 3 – Reporting
+
+Collection_Summary_Required
+Frequency_Collection_Summary
+Data_Extract_Required
+Frequency_Extract_File
+Daily_Settlement_Required
+
+
+Section 4 – Settlement (Vendor and Charge A/C Details)
+
+Contact_Person
+Communication_Method
+Address_Line_1
+Address_Line_2
+Suburb
+State
+Postcode
+Industry
+Phone
+Fax
+Email
+Vendor ABN
+Bank_Branch_Name
+BSB
+Account
+Vendor
+
+Section 5 – Pricing Schedule (if applicable)
+
+Pricing_Start_Date
+Pricing_End_Date
+Split_Conditions
+
+Section 6 – Charging Details (for New Agencies)
+
+Cost_of_Implementation
+GL
+WCC (Cost Centre)
+Product (Reference Text)
+Charge_Account
+Material_Code
+
+
+
+
+
+
+
+
+
+
+
+
+
+

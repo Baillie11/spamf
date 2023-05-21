@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const { PDFDocument, StandardFonts } = require('pdf-lib');
+const { readFile, writeFile } = require('fs/promises');
 const fs = require('fs');
+
 
 app.use(express.static('public', {
   setHeaders: (res, path, stat) => {
@@ -27,7 +29,7 @@ app.get('/', (req, res) => {
 
 // handle POST requests to the form submission
 app.post('/submit', async (req, res) => {
-  const selectedItem = req.body.item;
+  const selectedValue=req.body.item;
   const reasonForAmf = req.body['reasonforamf'];
   const agencyType = req.body['agency-type'];
   const agencyNumber = req.body['agency-number'];
@@ -36,77 +38,119 @@ app.post('/submit', async (req, res) => {
   const startDate = req.body['start-date'];
   const endDate = req.body['end-date'];
   const agencyCustomerNo = req.body['agency-customer-no'];
+  //console.log("Agency Customer Number =")// & agencyCustomerNo)
   const agencyPrincipleName = req.body['agency-principle-name'];
-  const account = req.body.account;
-  const email = req.body.email;
-  const address = req.body.address;
+  const account = req.body['account'];
+  const email = req.body['email'];
+  const address1 = req.body['address1'];
+  const address2 = req.body['address2'];
+  const suburb = req.body['suburb'];
+  const state = req.body['state'];
+  const postcode = req.body['postcode'];
   const settlementType = req.body['settlement-type'];
-  const period = req.body.period;
-  
-  console.log ('Reason for AMF=', reasonForAmf)
-  console.log ('Agency Number=', agencyNumber)
-  console.log ('MID=', mid)
-  console.log ('Merchant Name=', merchantName)
-  console.log ('Start Date', startDate)
+  const period = req.body['period'];
+  const splitConditions = 'No';
+  const bankName = req.body['bank-name'];
+  const bsb = req.body['bsb'];
+  const accountNumber = req.body['account-number'];
+  const vendor = req.body['vendor'];
+  const negativeAdjustments = req.body['negative-adjustments'];
 
-  // Load the existing PDF file
-  const pdfBytes = fs.readFileSync('template.pdf');
+  async function createPDF(input, output) {
+    try {
+        const pdfDoc = await PDFDocument.load(await readFile(input));
 
-  // Create a new PDF document based on the existing one
-  const pdfDoc = await PDFDocument.load(pdfBytes);
+        //Modify doc - Fill out the form.
+        const fieldNames =pdfDoc
+        .getForm()
+        .getFields()
+        .map((f) => f.getName());
 
-  // Get the first page
-  const pages = pdfDoc.getPages();
-  const page = pages[0];
+        //update pdf document with form data
+        const form = pdfDoc.getForm();
 
-  // Embed a font
-  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+        const reason = selectedValue;
+        console.log(reason);
+               
+        form.getTextField('Reason_for_AMF').setText(reasonForAmf); // Reason for AMF
+        form.getTextField('Agency_Type').setText(agencyType); // Agency Type
 
-  // Set the font size and write the user input to the page
-  const fontSize = 12;
-  const headingfontsize = 40;
-  const lineHeight = fontSize * 1.5;
-  const margin = 50;
-  let y = page.getHeight() - margin;
-  page.drawText(`Agency Management Form – Post Billpay and IDV`, {
-    x: margin,
-    y,
-    size: headingfontsize,
-    font,
-  });
-  y -= lineHeight;
-  page.drawText(`Reason for AMF: ${reasonForAmf}`, {
-    x: margin,
-    y,
-    size: fontSize,
-    font,
-  });
-  y -= lineHeight;
-  page.drawText(`Agency Type: ${agencyType}`, {
-    x: margin,
-    y,
-    size: fontSize,
-    font,
-  });
-  y -= lineHeight;
-  page.drawText(`Agency Number: ${agencyNumber}`, {
-    x: margin,
-    y,
-    size: fontSize,
-    font,
-  });
 
-  // save the filled PDF as a file and send it as a response
-//  const pdfBytes = await pdfDoc.save();
-  fs.writeFile(mid + '.pdf', pdfBytes, (err) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Failed to generate PDF');
-    } else {
-      console.log('PDF generated successfully');
-      res.download(mid + '.pdf');
+        switch(reason) {
+          case "close-account":
+            console.log("To close account");
+            form.getTextField('Agency_Principle_Number').setText(agencyNumber);
+            form.getTextField('Contract_End_Date').setText(endDate);
+            break;
+          
+          case "change-pricing":
+            console.log("To change pricing");
+            form.getTextField('Agency_Customer_Number_1').setText(agencyCustomerNo);
+            form.getTextField('Agency_Principle_Number').setText(agencyNumber);
+            //form.getTextField('Distribution_Channel').setText('03');
+            form.getTextField('Pricing_Start_Date').setText(startDate);
+            form.getTextField('Pricing_End_Date').setText("31.12.9999");
+            break;
+
+          case "settlement-account":
+            console.log("To change settlement account");
+            form.getTextField('Agency_Principle_Name').setText(agencyPrincipleName);
+            form.getTextField('Agency_Principle_Number').setText(agencyNumber);
+            //form.getTextField('Agency_Customer_Number_1').setText(agencyCustomerNo);
+            form.getTextField('Bank_Branch_Name').setText(bankName);
+            form.getTextField('BSB').setText(bsb);
+            form.getTextField('Account').setText(accountNumber);
+            form.getTextField('Vendor').setText(vendor);
+            break;
+          
+          case "customer-email":
+            console.log("To change email address");
+            form.getTextField('Agency_Principle_Name').setText(agencyPrincipleName);
+            form.getTextField('Agency_Principle_Number').setText(agencyNumber);
+            form.getTextField('Email').setText(email);
+            form.getTextField('Vendor').setText(vendor);
+            break;
+          
+          case "customer-address":
+            console.log("To change customer address");
+            form.getTextField('Agency_Principle_Number').setText(agencyNumber);
+            form.getTextField('Agency_Customer_Number_1').setText(agencyCustomerNo);
+            form.getTextField('Agency_Customer_Number_1').setText(agencyCustomerNo);
+            form.getTextField('Agency_Customer_Number_1').setText(agencyCustomerNo);
+            form.getTextField('Agency_Customer_Number_1').setText(agencyCustomerNo);
+            form.getTextField('Agency_Customer_Number_1').setText(agencyCustomerNo); 
+                     
+
+          
+        }
+
+
+        //form.getTextField('Agency_Principle_Number').setText({agencyNumber});
+        //form.getTextField('Agency_Customer_Number_1').setText({agencyCustomerNo});
+        //form.getTextField('Pricing_Start_Date').setText({startDate});
+        //form.getTextField('Pricing_End_Date').setText({endDate});
+        //form.getTextField('Split_Conditions').setText({splitConditions});
+        
+        //form.getTextField('Email').setText({email});
+        
+        //form.getTextField('Address_Line_1').setText({address1});
+        //form.getTextField('Suburb').setText({suburb});
+        //form.getTextField('State').setText({state});
+        //form.getTextField('Postcode').setText({postcode});
+        //form.getTextField('Split_Conditions').setText({splitConditions});
+ 
+        const pdfBytes = await pdfDoc.save();
+
+        await writeFile(output, pdfBytes);
+        console.log('PDF created');
+    } catch (err) {
+        console.log(err);
     }
-  });
+}
+
+createPDF('template.pdf', 'AMF.pdf');
+  
+  
 });
 
 // start the server
