@@ -154,7 +154,7 @@ app.post('/submit', async (req, res) => {
 }
 
 
-var directoryPath = `C:/SecurePay/${mid}-${agencyPrincipleName}-${reasonForAmf}`;
+var directoryPath = `C:/SecurePay/${mid}-${agencyPrincipleName}`;
 
 fs.mkdir(directoryPath, { recursive: true }, (err) => {
   if (err) {
@@ -164,13 +164,13 @@ fs.mkdir(directoryPath, { recursive: true }, (err) => {
   }
 });
 
-    pdfName=mid + "-" + agencyPrincipleName + ".pdf"
+    pdfName=mid + "-" + agencyPrincipleName + "-" + reasonForAmf + ".pdf"
     
     // const pdfPath = path.join(directoryPath, pdfName);
     // await createPDF('template.pdf', pdfPath);
 
 // console.log("reason =" + reason)
-createPDF('template.pdf', pdfName);
+createPDF('template.pdf', directoryPath + "/" + pdfName);
   
   
 });
