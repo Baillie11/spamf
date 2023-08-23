@@ -1,0 +1,7 @@
+template pdf does not have a "Negative Adjustments" field - need to fix.
+Need to change the completed PDF name to MID & Reason for change and save to common directory.
+
+Need to finish Address change
+
+Need to add : Change Settlement From Gross to Nett & Change Settlement From Nett to Gross
+

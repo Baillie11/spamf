@@ -1,0 +1,256 @@
+<!-- index.ejs -->
+
+<html>
+  <head>
+    <title>AMF Form Creator</title>
+    <link rel="stylesheet" href="/views/public/css/styles.css" />
+  </head>
+  <body>
+    
+    <div class="form-container">
+      
+      <form method="post" action="/submit">
+        <h1>AMF Form Creator</h1>
+        <div class="form-row">
+          <div class="column">
+            <label for="dropdown">Select an item:</label>
+            <select id="dropdown" name="item">
+              <option value="please-select "></option>
+              <option value="close-account">To Close Account</option>
+              <option value="change-pricing">Add Pricing/Change Pricing</option>
+              <option value="settlement-account">Settlement Account</option>
+              <option value="customer-email">Customer Email address</option>
+              <option value="customer-address">Customer Address</option>
+              <option value="change-trading">Trading Name</option>
+              <option value="change-settlement-period">Change settlement Period to immediate</option>
+            </select>
+          </div>
+          <div class="column">
+            <div id="input-options"></div>
+          </div>
+        </div>
+        <div class="form-row">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const dropdown = document.querySelector("#dropdown");
+      const inputOptions = document.querySelector("#input-options");
+
+      dropdown.addEventListener("change", (event) => {
+        const selectedItem = event.target.value;
+        
+        // display input options based on the selected item
+        switch (selectedItem) {
+          case "close-account":
+            inputOptions.innerHTML = `
+              <label for="reasonforamf">Reason for AMF:</label>
+              <input type="text" id="reasonforamf" name="reasonforamf" value="To Make Inactive">
+
+              <label for="agency-type">Agency Type:</label>
+              <input type="text" id="agency-type" name="agency-type" value="MS - Merchant Services - 103704">
+
+              <label for="mid">Merchant ID:</label>
+              <input type="text" id="mid" name="mid" title="7 character SecurePay Merchant ID">
+
+              <label for="merchant-name">Merchant Name:</label>
+              <input type="text" id="merchant-name" name="merchant-name">
+
+              <label for="agency-number">Agency Number:</label>
+              <input type="text" id="agency-number" name="agency-number" title="4 character Agency ID - Found on the Intranet">
+
+              <label for="vendor">Vendor Number:</label>
+              <input type="text" id="vendor" name="vendor" title="Vendor Number - Found on 'Notes' section on Intranet">
+
+              <label for="end-date">End Date:</label>
+              <input type="text" id="end-date" name="end-date" title="Format dd.mm.yyyy">
+            `;
+            break;
+
+          case "change-pricing":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Price Variation">
+            
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS - Merchant Services - 103704">
+
+            <label for="mid">Merchant ID:</label>
+            <input type="text" id="mid" name="mid" title="7 character SecurePay Merchant ID">
+
+            <label for="merchant-name">Merchant Name:</label>
+            <input type="text" id="merchant-name" name="merchant-name">
+
+            <label for="agency-customer-no">Agency Customer No:</label>
+            <input type="text" id="agency-customer-no" name="agency-customer-no">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number" title="4 character Agency ID - Found on the Intranet">
+
+            <label for="start-date">Start Date:</label>
+            <input type="text" id="start-date" name="start-date" title="Format dd.mm.yyyy">
+            
+            <label for="end-date">End Date:</label>
+            <input type="text" id="end-date" name="end-date" value="31.12.9999">
+            `;
+            break;
+
+          case "settlement-account":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS - Merchant Services - 103704">
+
+            <label for="mid">Merchant ID:</label>
+            <input type="text" id="mid" name="mid" title="7 character SecurePay Merchant ID">
+            
+            <label for="merchant-name">Merchant Name:</label>
+            <input type="text" id="merchant-name" name="merchant-name">
+
+            <label for="agency-number">Agency Customer Number:</label>
+            <input type="text" id="agency-number" name="agency-number" title="Agency Customer Number - Found on the Intranet">
+
+            <label for="bank-name">Bank & Branch Name:</label>
+            <input type="text" id="bank-name" name="bank-name">
+            
+            <label for="bsb">BSB:</label>
+            <input type="text" id="bsb" name="bsb">
+
+            <label for="account-number">Account Number:</label>
+            <input type="text" id="account-number" name="account-number">
+
+            <label for="vendor">Vendor Number:</label>
+            <input type="text" id="vendor" name="vendor" title="Vendor Number - Found on 'Notes' section on Intranet">
+            `;
+            break;
+
+          case "customer-email":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS - Merchant Services - 103704">
+
+            <label for="mid">Merchant ID:</label>
+            <input type="text" id="mid" name="mid" title="7 character SecurePay Merchant ID">
+
+            <label for="merchant-name">Merchant Name:</label>
+            <input type="text" id="merchant-name" name="merchant-name">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number" title="4 character Agency ID - Found on the Intranet">
+
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email">
+
+            <label for="vendor">Vendor Number:</label>
+            <input type="text" id="vendor" name="vendor">
+                       `;
+            break;
+
+          case "customer-address":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS - Merchant Services - 103704">
+
+            <label for="mid">Merchant ID:</label>
+            <input type="text" id="mid" name="mid" title="7 character SecurePay Merchant ID">
+
+            <label for="merchant-name">Merchant Name:</label>
+            <input type="text" id="merchant-name" name="merchant-name">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number" title="4 character Agency ID - Found on the Intranet">
+
+            <label for="agency-customer-number">Agency Customer No:</label>
+            <input type="text" id="agency-customer-number" name="agency-customer-number" title="Agency Customer Number - Found on the Intranet">
+
+            <label for="vendor">Vendor Number:</label>
+            <input type="text" id="vendor" name="vendor">
+
+            <label for="address1">Address Line 1:</label>
+            <input type="text" id="address1" name="address1">
+
+            <label for="address2">Address Line 2:</label>
+            <input type="text" id="address2" name="address2">
+
+            <label for="suburb">Suburb:</label>
+            <input type="text" id="suburb" name="suburb">
+
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state">
+
+            <label for="postcode">Postcode:</label>
+            <input type="text" id="postcode" name="postcode">
+            `;
+            break;
+
+          case "change-trading":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS - Merchant Services - 103704">
+
+            <label for="mid">Merchant ID:</label>
+            <input type="text" id="mid" name="mid" title="7 character SecurePay Merchant ID">
+
+            <label for="merchant-name">Merchant Name:</label>
+            <input type="text" id="merchant-name" name="merchant-name">
+            
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number" title="4 character Agency ID - Found on the Intranet">
+
+            <label for="vendor">Vendor Number:</label>
+            <input type="text" id="vendor" name="vendor">
+           
+            `;
+            break;
+
+          case "change-settlement-period":
+            inputOptions.innerHTML = `
+            <label for="reasonforamf">Reason for AMF:</label>
+            <input type="text" id="reasonforamf" name="reasonforamf" value="Change details only">
+
+            <label for="agency-type">Agency Type:</label>
+            <input type="text" id="agency-type" name="agency-type" value="MS - Merchant Services - 103704">
+
+            <label for="mid">Merchant ID:</label>
+            <input type="text" id="mid" name="mid" title="7 character SecurePay Merchant ID">
+
+            <label for="merchant-name">Merchant Name:</label>
+            <input type="text" id="merchant-name" name="merchant-name">
+
+            <label for="agency-number">Agency Number:</label>
+            <input type="text" id="agency-number" name="agency-number" title="4 character Agency ID - Found on the Intranet">
+
+            <label for="agency-customer-number">Agency Customer No 1:</label>
+            <input type="text" id="agency-customer-number" name="agency-customer-number" title="Agency Customer Number - Found on the Intranet">
+
+            <label for="vendor">Vendor Number:</label>
+            <input type="text" id="vendor" name="vendor">
+
+            <label for="negative-adjustments">Negative Adjustments & Dishonours:</label>
+            <input type="text" id="negative-adjustments" name="negative-adjustments" value="Nett">
+              `;
+            break;
+           
+
+
+          default:
+            inputOptions.innerHTML = "";
+            break;
+        }
+      });
+    </script>
+  </body>
+</html>
