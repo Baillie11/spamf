@@ -8,8 +8,6 @@ const path = require('path');
 
 // var reason=""
 
-
-
 app.use(express.static('public', {
   setHeaders: (res, path, stat) => {
     res.set('Content-Type', 'text/css');
@@ -161,16 +159,15 @@ fs.mkdir(directoryPath, { recursive: true }, (err) => {
     console.error('Error creating directory:', err);
   } else {
     console.log('Directory created successfully at '+ directoryPath);
+
+      
   }
 });
 
     pdfName=mid + "-" + agencyPrincipleName + ".pdf"
-    
-    // const pdfPath = path.join(directoryPath, pdfName);
-    // await createPDF('template.pdf', pdfPath);
 
-// console.log("reason =" + reason)
-createPDF('template.pdf', pdfName);
+
+  createPDF('template.pdf', directoryPath + "/"+ pdfName);
   
   
 });
