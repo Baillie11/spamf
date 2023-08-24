@@ -166,11 +166,9 @@ fs.mkdir(directoryPath, { recursive: true }, (err) => {
 
     pdfName=mid + "-" + agencyPrincipleName + ".pdf"
     
-    // const pdfPath = path.join(directoryPath, pdfName);
-    // await createPDF('template.pdf', pdfPath);
+  
 
-// console.log("reason =" + reason)
-createPDF('template.pdf', pdfName);
+createPDF('template.pdf', directoryPath + "/" + pdfName);
   
   
 });
